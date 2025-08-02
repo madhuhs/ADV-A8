@@ -19,8 +19,6 @@ class EmpDbImpl implements EmployeeDb{
     private final String user = "root";
     private final String password = "root";
     private Connection connection;
-
-
     @Override
     public void addEmployee(String name, String job, int salary, int deptNo) {
         init();
@@ -34,7 +32,6 @@ class EmpDbImpl implements EmployeeDb{
         }
         System.out.println("Employee data added to DB");
     }
-
     @Override
     public void deleteEmployee(int empId) {
 
