@@ -75,6 +75,23 @@ public class StudentDB {
         }
        return studentsList;
     }
+    public StudentEntity getById(int id) throws SQLException {
+        String selectById = "Select * from tablename where sid = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(selectById);
+        preparedStatement.setInt(1,id);
+        ResultSet resultSet =  preparedStatement.executeQuery();
+
+        //check if the resultset is empty
+        if(resultSet.next()){
+            StudentEntity studentEntity = new StudentEntity();
+            studentEntity.setSid(resultSet.getInt("sid"));
+            return studentEntity;
+        }
+        else{
+            throw new IllegalArgumentException("INVALID sid "+id);
+        }
+
+    }
 }
 
 
