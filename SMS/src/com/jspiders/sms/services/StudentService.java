@@ -2,8 +2,9 @@ package com.jspiders.sms.services;
 
 import com.jspiders.sms.dto.StudentDTO;
 
-public interface StudentService {
+import java.sql.SQLException;
 
-    void addStudent(StudentDTO studentDTO);
+public interface StudentService {
+    void addStudent(StudentDTO studentDTO) throws SQLException;
 }
 

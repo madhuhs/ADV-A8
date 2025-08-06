@@ -55,4 +55,16 @@ public class StudentEntity {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    @Override
+    public String toString() {
+        return "StudentEntity{" +
+                "sid=" + sid +
+                ", name='" + name + '\'' +
+                ", dept=" + dept +
+                ", dob='" + dob + '\'' +
+                ", skills='" + skills + '\'' +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

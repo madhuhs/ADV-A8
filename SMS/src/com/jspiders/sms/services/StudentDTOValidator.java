@@ -8,7 +8,7 @@ public class StudentDTOValidator {
     }
     private static void checkName(StudentDTO studentDTO){
       String name =  studentDTO.getName();
-      if (name.length() < 4){
+      if (name == null || name.length() < 4){
           throw  new IllegalArgumentException("Name should be minimum 4 chars : "+name);
       }
     }
