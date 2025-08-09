@@ -1,0 +1,21 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="jakarta.persistence.jdbc.driver">com.mysql.cj.jdbc.Driver</property>
+        <property name="jakarta.persistence.jdbc.url">jdbc:mysql://localhost:3306/companydb</property>
+        <property name="jakarta.persistence.jdbc.user">root</property>
+        <property name="jakarta.persistence.jdbc.password">root</property>
+
+        <!-- Hibernate options -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Entity mappings (if using hbm.xml, add <mapping resource="..."/> instead) -->
+        <mapping class="a"/>
+
+    </session-factory>
+</hibernate-configuration>
