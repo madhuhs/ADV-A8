@@ -30,24 +30,25 @@ public class Main2 {
 
         Transaction transaction = session.beginTransaction();
 
-        ContactEntity contactEntity = new ContactEntity();
-        List<CallLogsEntity> callLogs = new ArrayList<>();
+        //Insert
+////        ContactEntity contactEntity = new ContactEntity();
+////        contactEntity.setName("NewContact1");
+////        contactEntity.setPhone("9000000001");
+////        contactEntity.setEmail("newEmail@test.com");
+//
+//        List<CallLogsEntity> callLogs = new ArrayList<>();
 
-        contactEntity.setName("Contact1");
-        contactEntity.setEmail("newEmail");
-        contactEntity.setPhone("909090981");
+        ContactEntity contactEntity = session.find(ContactEntity.class,1);
+        List<CallLogsEntity> callLogs = contactEntity.getCallLogs();
 
-        CallLogsEntity log1 = new CallLogsEntity();
-        log1.setCallType(CALL_TYPE_MISSED);
-        log1.setDateAndTime(LocalDateTime.now().toString());
-
-        log1.setContactEntity(contactEntity);
-
-        callLogs.add(log1);
-
+        CallLogsEntity callLog1 = new CallLogsEntity();
+        callLog1.setCallType(CALL_TYPE_MISSED);
+        callLog1.setDateAndTime(LocalDateTime.now().toString());
+        callLog1.setContactEntity(contactEntity);
+        callLogs.add(callLog1);
         contactEntity.setCallLogs(callLogs);
 
-        session.persist(contactEntity); // cascades to children because of CascadeType.ALL
+        session.persist(contactEntity);
         transaction.commit();
 
 
