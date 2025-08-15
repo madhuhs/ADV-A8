@@ -18,6 +18,7 @@
         <mapping class="com.jspiders.hibernate.entities.ContactEntity"/>
         <mapping class="com.jspiders.hibernate.entities.ProfilePictureEntity"/>
         <mapping class="com.jspiders.hibernate.entities.CallLogsEntity"/>
+        <mapping class="com.jspiders.hibernate.entities.GroupEntity"/>
 
     </session-factory>
 </hibernate-configuration>

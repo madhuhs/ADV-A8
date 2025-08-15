@@ -28,6 +28,14 @@ public class ContactEntity {
 
     private List<CallLogsEntity> callLogs;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "contact_groups_map",
+            joinColumns = @JoinColumn(name = "contact_id"),
+            inverseJoinColumns = @JoinColumn(name = "groups_id")
+    )
+    private List<GroupEntity> groups;
+
     public ContactEntity(int id, String name, String phone, String email) {
         this.id = id;
         this.name = name;
@@ -85,6 +93,14 @@ public class ContactEntity {
 
     public void setCallLogs(List<CallLogsEntity> callLogs) {
         this.callLogs = callLogs;
+    }
+
+    public List<GroupEntity> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<GroupEntity> groups) {
+        this.groups = groups;
     }
 
     @Override
