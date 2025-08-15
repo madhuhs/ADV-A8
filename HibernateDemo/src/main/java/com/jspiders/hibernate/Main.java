@@ -36,7 +36,6 @@ public class Main {
         System.out.println(contactEntity1.getEmail());
         System.out.println(contactEntity1.getPhone());
 
-
         //update
         ContactEntity contactEntity2 = session.find(ContactEntity.class,2);
         contactEntity2.setEmail("newEmail2@gmail.com");

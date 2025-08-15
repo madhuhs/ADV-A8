@@ -1,12 +1,33 @@
 package com.jspiders.hibernate.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "contact")
 public class ContactEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
+    private String phone;
+    private String email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profilePicture",referencedColumnName = "ppid")
+    private ProfilePictureEntity profilePicture;
+
+
+    @OneToMany(
+            mappedBy = "contactEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+
+    private List<CallLogsEntity> callLogs;
+
     public ContactEntity(int id, String name, String phone, String email) {
         this.id = id;
         this.name = name;
@@ -16,12 +37,6 @@ public class ContactEntity {
     public ContactEntity(){
 
     }
-
-    @Id
-    private int id;
-    private String name;
-    private String phone;
-    private String email;
 
     public int getId() {
         return id;
@@ -53,5 +68,33 @@ public class ContactEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public ProfilePictureEntity getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(ProfilePictureEntity profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+
+    public List<CallLogsEntity> getCallLogs() {
+        return callLogs;
+    }
+
+    public void setCallLogs(List<CallLogsEntity> callLogs) {
+        this.callLogs = callLogs;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", profilePicture=" + profilePicture +
+                '}';
     }
 }

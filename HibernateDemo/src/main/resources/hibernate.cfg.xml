@@ -16,6 +16,8 @@
 
         <!-- Entity mappings (if using hbm.xml, add <mapping resource="..."/> instead) -->
         <mapping class="com.jspiders.hibernate.entities.ContactEntity"/>
+        <mapping class="com.jspiders.hibernate.entities.ProfilePictureEntity"/>
+        <mapping class="com.jspiders.hibernate.entities.CallLogsEntity"/>
 
     </session-factory>
 </hibernate-configuration>
