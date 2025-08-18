@@ -14,15 +14,24 @@ public class HibernateUtils {
         Configuration configuration = new Configuration();
         configuration.configure(hibernateCfgFile);
 
+        //Build Session Factory
         if(sessionFactory == null) {
             sessionFactory = configuration.buildSessionFactory();
+            System.out.println("SessionFactory created");
         }
+        //Open and return the Session object (connection)
         session = sessionFactory.openSession();
+        System.out.println("Session created");
         return session;
     }
 
     public static void shutdown(){
         session.close();
         sessionFactory.close();
+        session = null;
+        sessionFactory = null;
+
+        System.out.println("Session closed");
+        System.out.println("SessionFactory closed");
     }
 }
