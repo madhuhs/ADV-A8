@@ -26,7 +26,9 @@ public class HibernateUtils {
     }
 
     public static void shutdown(){
-        session.close();
+        if(session.isOpen()) {
+            session.close();
+        }
         sessionFactory.close();
         session = null;
         sessionFactory = null;

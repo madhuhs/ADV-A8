@@ -11,12 +11,12 @@ public class OrdersEntity {
     private double price;
     private int qty;
 
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipping_address_id",referencedColumnName = "id")
+    private ShippingAddressEntity shippingAddress;
+
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public double getPrice() {
@@ -35,12 +35,21 @@ public class OrdersEntity {
         this.qty = qty;
     }
 
+    public ShippingAddressEntity getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(ShippingAddressEntity shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
     @Override
     public String toString() {
         return "OrdersEntity{" +
                 "id=" + id +
                 ", price=" + price +
                 ", qty=" + qty +
+                ", shippingAddress=" + shippingAddress +
                 '}';
     }
 }
