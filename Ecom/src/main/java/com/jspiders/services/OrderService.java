@@ -36,6 +36,7 @@ public class OrderService {
         for (int i=0;i<orderItems.size();i++){
            totalPrice = totalPrice + orderItems.get(i).getPrice();
         }
+
         ordersEntity.setPrice(totalPrice);
         int totalQty = ordersEntity.getOrderItems().size();
         ordersEntity.setQty(totalQty);

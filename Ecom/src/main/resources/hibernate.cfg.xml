@@ -18,5 +18,7 @@
         <mapping class="com.jspiders.data.entities.OrdersEntity"/>
         <mapping class="com.jspiders.data.entities.ShippingAddressEntity"/>
         <mapping class="com.jspiders.data.entities.OrderItemsEntity"/>
+        <mapping class="com.jspiders.data.entities.ProductEntity"/>
+        <mapping class="com.jspiders.data.entities.CategoryEntity"/>
     </session-factory>
 </hibernate-configuration>
