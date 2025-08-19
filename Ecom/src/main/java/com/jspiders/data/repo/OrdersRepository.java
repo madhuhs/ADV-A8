@@ -16,8 +16,7 @@ public class OrdersRepository {
 
     public OrdersEntity findOrderById(long id){
         Session session = HibernateUtils.getSession();
-       OrdersEntity ordersEntity = session.find(OrdersEntity.class,id);
-       return ordersEntity;
+        return session.find(OrdersEntity.class,id);
     }
 
     public void disconnect(){

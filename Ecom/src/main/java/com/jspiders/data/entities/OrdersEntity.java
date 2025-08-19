@@ -2,6 +2,9 @@ package com.jspiders.data.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "orders")
 public class OrdersEntity {
@@ -14,6 +17,9 @@ public class OrdersEntity {
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "shipping_address_id",referencedColumnName = "id")
     private ShippingAddressEntity shippingAddress;
+
+    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<OrderItemsEntity> orderItems = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -41,6 +47,15 @@ public class OrdersEntity {
 
     public void setShippingAddress(ShippingAddressEntity shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public void addOrderItem(OrderItemsEntity orderItemsEntity){
+      orderItems.add(orderItemsEntity);
+      orderItemsEntity.setOrders(this);//link orderItem to OrderEntity
+    }
+
+    public List<OrderItemsEntity> getOrderItems() {
+        return orderItems;
     }
 
     @Override

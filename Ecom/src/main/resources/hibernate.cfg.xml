@@ -17,5 +17,6 @@
         <!-- Entity mappings (if using hbm.xml, add <mapping resource="..."/> instead) -->
         <mapping class="com.jspiders.data.entities.OrdersEntity"/>
         <mapping class="com.jspiders.data.entities.ShippingAddressEntity"/>
+        <mapping class="com.jspiders.data.entities.OrderItemsEntity"/>
     </session-factory>
 </hibernate-configuration>
