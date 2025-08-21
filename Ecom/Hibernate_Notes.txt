@@ -286,9 +286,6 @@ Relationships
 	•	Do you want unidirectional (simpler, but fewer navigations) or bidirectional (more natural, but more complex)?
 
 
-    
-
-
 	Cascading & collections helpers (patterns, not methods)
 	1.	cascade = CascadeType.ALL (on association)
 	•	Propagates persist/merge/remove/refresh to children.
@@ -299,7 +296,7 @@ Relationships
 	•	Use it when Child has no meaning without parent.
 
 	🔹 What is Fetch Type?
-	•	Fetch Type in Hibernate/JPA defines how related entities are loaded from the database.
+	•	Fetch Type in Hibernate defines how related entities are loaded from the database.
 	•	It decides when associated entities (in relationships like OneToOne, OneToMany, etc.) are fetched:
 	•	Eager Loading → Loads data immediately.
 	•	Lazy Loading → Loads data only when needed.
@@ -333,6 +330,102 @@ Relationships
 	2.	Override to EAGER only if you always need the related entity.
 	3.	For large collections, always prefer LAZY + batch fetching.
 
-
     •	EAGER = “Load now, even if not needed.”
 	•	LAZY = “Load later, only if needed.”
+
+	Hibernate Persistence Life Cycle
+	1. Transient → Persistent
+    	•	Happens via session.save(), session.persist(), or fetching (session.get()).
+    	•	Hibernate assigns primary key if needed.
+    	•	Object becomes managed and enters the persistence context.
+    	•	Example:
+    2. Persistent → Detached
+    	•	When session closes or object is evicted/cleared from session.
+    	•	Hibernate stops tracking changes.
+    	•	Object still exists in memory with an ID.
+    3. Detached → Persistent
+    	•	session.merge(obj) → copies state from detached object into a managed one.
+    	•	session.update(obj) → reattaches the object as is.
+    	•	merge vs update:
+    	•	merge() → creates/returns a new persistent copy.
+    	•	update() → directly reattaches the same object.
+    4. Persistent → Removed
+    	•	Happens via session.remove(obj) or session.delete(obj).
+    	•	On commit, Hibernate deletes the row in DB.
+
+   Transient (new object)
+      |
+      v save/persist/get()
+   Persistent (managed)
+      |  \        \
+      |   \evict   \ close()
+      |    \        \
+      v     v        v
+   Removed  Detached (not tracked)
+
+
+   What is HQL?
+   	•	HQL stands for Hibernate Query Language.
+   	•	It is object-oriented and similar to SQL but works with Java classes and objects instead of database tables and columns.
+   	•	Example: Instead of writing SELECT * FROM contact, you write:
+
+
+   	 Key Features of HQL
+    	1.	Object-Oriented – Uses class names & property names, not table/column names.
+    	2.	Portable – Works across databases (SQL dialect handled by Hibernate).
+    	3.	Supports Relationships – Can navigate associations (@OneToOne, @OneToMany, etc.).
+    	4.	Powerful – Supports joins, group by, aggregate functions, etc.
+
+
+     Basic Select
+     Query query = session.createQuery("FROM EntityClassName");
+     List<EntityClassName> data = query.list();
+
+     Selecting Specific Fields
+     Query query = session.createQuery("SELECT c.name, c.email FROM EntityClassName c");
+     List<Object[]> results = query.list();
+
+     Where Clause
+     Query query = session.createQuery("FROM EntityClassName c WHERE c.name = :name");
+     query.setParameter("name", "value");
+     List<EntityClassName> results = query.list();
+
+     Joins
+
+     a) Inner Join
+     Query query = session.createQuery("SELECT c.memberName, p.memberName FROM EntityClassName1 c INNER JOIN c.EntityClassName2 p");
+     List<Object[]> results = query.list();
+
+     b) Left Join
+     Query query = session.createQuery(
+         "SELECT c.memberName, cl.memberName FROM EntityClassName1 c LEFT JOIN c.EntityClassName2 cl"
+     );
+
+     Order By
+     Query query = session.createQuery("FROM EntityClassName c ORDER BY c.name ASC");
+
+     Aggregate Functions
+     Query query = session.createQuery("SELECT COUNT(c) FROM EntityClassName c");
+     Long count = (Long) query.uniqueResult();
+
+     Update
+     Query query = session.createQuery("UPDATE EntityClassName c SET c.memberName = :memberName WHERE c.id = :id");
+     query.setParameter("memberName", "value");
+     query.setParameter("id", 5);
+     int rows = query.executeUpdate();
+
+     Delete
+     Query query = session.createQuery("DELETE FROM EntityClassName c WHERE c.id = :id");
+     query.setParameter("id", 10);
+     int rows = query.executeUpdate();
+
+     Criteria API vs HQL
+     	•	HQL = text-based query language.
+     	•	Criteria API = programmatic query building.
+     	•	Example in Criteria:
+
+     CriteriaBuilder cb = session.getCriteriaBuilder();
+     CriteriaQuery<ContactEntity> cq = cb.createQuery(ContactEntity.class);
+     Root<ContactEntity> root = cq.from(ContactEntity.class);
+     cq.select(root).where(cb.equal(root.get("name"), "John"));
+     List<ContactEntity> results = session.createQuery(cq).getResultList();

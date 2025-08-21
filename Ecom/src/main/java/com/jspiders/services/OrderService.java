@@ -50,6 +50,7 @@ public class OrderService {
     public void findOrderById(long id){
       OrdersEntity ordersEntity =  ordersRepository.findOrderById(id);
         System.out.println(ordersEntity);
+        System.out.println(ordersEntity.getOrderItems().size());
     }
 
     public void disconnect(){

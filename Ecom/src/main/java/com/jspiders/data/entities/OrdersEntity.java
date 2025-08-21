@@ -18,7 +18,7 @@ public class OrdersEntity {
     @JoinColumn(name = "shipping_address_id",referencedColumnName = "id")
     private ShippingAddressEntity shippingAddress;
 
-    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<OrderItemsEntity> orderItems = new ArrayList<>();
 
     public long getId() {
