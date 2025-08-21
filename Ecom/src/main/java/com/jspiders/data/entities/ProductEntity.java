@@ -7,9 +7,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "product")
-@NamedQuery(name = "Product.findByName", query = "FROM ProductEntity c WHERE c.name = :name")
-@NamedQuery(name = "Product.findByPrice", query = "FROM ProductEntity p WHERE p.price > :price"
-)
+@NamedQuery(name = "findProductByName",
+            query = "FROM ProductEntity p where p.name = :name")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
