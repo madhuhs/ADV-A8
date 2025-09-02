@@ -1,9 +1,16 @@
 package com.jspiders;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Employee {
     private int id;
     private String name;
     private Address address;
+
+    public Employee(){
+        super();
+    }
 
     public int getId() {
         return id;

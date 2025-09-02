@@ -1,5 +1,6 @@
 package com.jspiders;
 
+import org.springframework.stereotype.Component;
 public class Address {
     private String city;
     private String state;
