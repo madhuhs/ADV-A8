@@ -21,6 +21,19 @@
             <artifactId>spring-context</artifactId>
             <version>7.0.0-M8</version>
         </dependency>
+        <!-- Bean Validation provider (Jakarta) -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
+            <version>4.0.2</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
 </project>
