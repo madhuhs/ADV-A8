@@ -6,9 +6,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import org.apache.logging.log4j.core.Logger;
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+
 
 @Component
 public class Main {
@@ -18,7 +21,7 @@ public class Main {
 
         SignupRequest request = new SignupRequest();
 
-        request.setName("user1");
+        request.setName("abcd");
         request.setEmail("user@gmail.com");
         request.setPhone("9876543210");
         request.setAge(23);

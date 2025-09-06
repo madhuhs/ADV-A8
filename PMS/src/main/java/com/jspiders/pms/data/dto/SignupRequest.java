@@ -1,13 +1,18 @@
 package com.jspiders.pms.data.dto;
 
+
+import com.jspiders.pms.validators.ValidEmail;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 
 public class SignupRequest {
-    @NotNull(message = "Name cannot be null")
+    //@NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be null")
     @Length(min = 4,max = 40,message = "Name should be min 4 chars max 40 chars")
     private String name;
     @Email(message = "Invalid email id")
+    @ValidEmail
+    //@gmail , @yahoo , @outlook
     private String email;
     @Length(min = 10,max = 10, message = "Invalid Phone number")
     private String phone;
