@@ -2,6 +2,7 @@ package com.jspiders.pms.data.dto;
 
 
 import com.jspiders.pms.validators.ValidEmail;
+import com.jspiders.pms.validators.ValidPhone;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -15,6 +16,7 @@ public class SignupRequest {
     //@gmail , @yahoo , @outlook
     private String email;
     @Length(min = 10,max = 10, message = "Invalid Phone number")
+    @ValidPhone
     private String phone;
     @Min(value = 18, message = "Age should be greater than 18")
     private int age;

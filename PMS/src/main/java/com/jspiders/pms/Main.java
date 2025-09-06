@@ -6,8 +6,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.apache.logging.log4j.core.Logger;
-import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -23,7 +21,7 @@ public class Main {
 
         request.setName("abcd");
         request.setEmail("user@gmail.com");
-        request.setPhone("9876543210");
+        request.setPhone("987643210");
         request.setAge(23);
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
