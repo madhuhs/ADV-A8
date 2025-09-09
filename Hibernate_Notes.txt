@@ -1,0 +1,338 @@
+Hibernate ORM
+
+ What is Hibernate is an open-source, lightweight Java framework designed to make database interaction for Java applications easy.
+
+ It was invented by Gavin King in 2001 and has since become one of the most widely used persistence frameworks in Java development.
+
+ Hibernate is an ORM (Object Relational Mapping) tool, which means it maps Java objects to relational database tables, eliminating the need for most SQL code.
+
+ Being a non-invasive framework, it does not force developers to extend specific classes or implement particular interfaces, making integration seamless.
+
+ Hibernate is database-independent — it supports multiple database systems without requiring code changes.
+ It offers automatic table creation, lazy loading, caching, and transaction management, which improves performance and productivity.
+
+ The framework supports HQL (Hibernate Query Language) in addition to SQL, enabling object-oriented queries.
+ Developers can build any type of Java application — from small desktop apps to large-scale enterprise systems — using Hibernate.
+
+
+Configuration
+
+
+ Configuration is  Hibernate helper class that holds all the settings and mappings (entities) needed to bootstrap Hibernate.
+
+ one place we can read hibernate.cfg.xml (or programmatic properties) and discover all annotated entity classes before building the SessionFactory.
+
+Key methods and constructor
+ 
+ new Configuration(): creates an empty configuration object (no settings yet).
+ 
+ configure(String resource) / configure():
+ Reads settings from a Hibernate config file.
+ 
+ If you pass a path (e.g., "hibernate.cfg.xml"), it loads that specific file; with no args, it looks for hibernate.cfg.xml on the classpath.
+ 
+ Typical contents: JDBC URL/user/pass, dialect, DDL auto, cache settings, etc., plus mapping discovery (annotated entities or HBM XML).
+
+ If the file isn’t on the classpath or the path is wrong, you’ll get a HibernateException.
+ You can also set properties in code: configuration.setProperty("hibernate.show_sql","true").
+
+ SessionFactory (interface)
+ SessionFactory is a thread-safe, heavyweight factory for database sessions.
+ We usually make one per database for the lifetime of the app.
+ 
+ How you built it
+ configuration.buildSessionFactory():
+ Compiles the configuration + mappings into an immutable, ready-to-use factory.
+ Expensive operation: do it once at startup, reuse everywhere.
+
+ Lifecycle
+ Create once (startup), keep as a singleton/bean.
+ Call close() on application shutdown to release pools/caches.
+
+ Common mistakes
+ Building a SessionFactory per request (very slow, leaks resources).
+ Forgetting to close on shutdown.
+
+
+Session (interface)
+
+A short-lived, not thread-safe object representing a single unit of work with the DB  like a JDBC Connection.
+How you get it
+sessionFactory.openSession():
+Creates a new Session.
+Caller is responsible for closing it: session.close().
+
+What you do inside a Session
+CRUD: persist, find,update,remove.
+Transaction boundaries (begin/commit/rollback).
+First-level cache: the Session keeps track of loaded/changed entities until flush/close.
+
+Common mistakes
+Sharing a Session across threads.
+Leaving a Session open (leaks connections).
+Doing work without a transaction.
+
+
+
+Annotations
+    Core Annotations
+ 	1.	@Entity
+	•	Purpose: Marks a Java class as a persistent entity (mapped to a database table).
+	•	Where to use: On a class.
+	•	Important: Must have a no-arg constructor and at least one field annotated with @Id.
+
+	2.	@Table
+	•	Purpose: Specifies the database table name for the entity.
+	•	Where to use: On a class.
+	•	Important: If not specified, Hibernate uses the class name as the table name.
+
+	3.	@Id
+	•	Purpose: Marks a field as the primary key of the entity.
+	•	Where to use: On a field or getter method.
+
+	4.	@GeneratedValue
+	•	Purpose: Defines the generation strategy for primary keys.
+	•	Where to use: With @Id field.
+	•	Important: Strategies include AUTO, IDENTITY, SEQUENCE, TABLE.
+
+	5.	@Column
+	•	Purpose: Customizes mapping of a class field to a table column.
+	•	Where to use: On a field or getter.
+	•	Important: Can define column name, length, nullability, uniqueness, etc.
+
+	6.	@Transient
+	•	Purpose: Marks a field that should NOT be persisted in the database.
+	•	Where to use: On a field.
+
+Relationships
+
+	7.	@OneToOne
+	•	Purpose: Defines a one-to-one relationship between two entities.
+	•	Where to use: On an entity field.
+	•	Important: Often combined with @JoinColumn or mappedBy.
+
+	8.	@OneToMany
+	•	Purpose: Defines a one-to-many relationship (one entity has a collection of another entity).
+	•	Where to use: On a collection field (List, Set).
+	•	Important: Requires mappedBy on one side or @JoinColumn to define ownership.
+
+	9.	@ManyToOne
+	•	Purpose: Defines a many-to-one relationship (many entities refer to one entity).
+	•	Where to use: On a field.
+	•	Important: Typically used with @JoinColumn.
+
+	10.	@ManyToMany
+	•	Purpose: Defines a many-to-many relationship between two entities.
+	•	Where to use: On a collection field.
+	•	Important: Often uses @JoinTable to define the join table.
+
+	11.	@JoinColumn
+	•	Purpose: Specifies the foreign key column for relationships.
+	•	Where to use: On the owning side of @OneToOne or @ManyToOne.
+	•	Important: Used to map foreign key name explicitly.
+
+	12.	@JoinTable
+	•	Purpose: Defines a join table for @ManyToMany or @OneToMany relationships.
+	•	Where to use: On a collection field.
+	•	Important: Contains details of joinColumns and inverseJoinColumns.
+
+	Advanced Mapping
+	13.	@Embeddable
+	•	Purpose: Marks a class whose instances are stored as part of an owning entity.
+	•	Where to use: On a class.
+
+	14.	@Embedded
+	•	Purpose: Used inside an entity to include an embeddable class.
+	•	Where to use: On a field.
+
+	15.	@Lob
+	•	Purpose: Marks a field as a large object (CLOB or BLOB).
+	•	Where to use: On String (CLOB) or byte[] (BLOB).
+
+	16.	@Enumerated
+	•	Purpose: Defines how enums are stored (ORDINAL or STRING).
+	•	Where to use: On enum fields.
+
+	Core CRUD on managed/detached entities
+
+	1.	Session.persist(entity)
+
+	•	Transitions a new (transient) entity to managed and schedules an INSERT.
+	•	Inserting new rows.
+	•	Returns: void.
+	•	Fails if the entity already has an existing ID (duplicate). Don’t use for updates.
+
+	2.  Session.merge(entity) Preferred for Update on DETACHED)
+
+	•	Copies data from a detached entity into a managed instance.
+	•	Web layer gave you a detached object.
+	•	Returns: Managed instance; use this returned object going forward.
+	•	Do not keep using the old detached object; it won’t track more changes.
+
+	3.	Session.remove(entity) (Delete)
+
+	•	Marks a managed entity for deletion (schedules DELETE).
+	•	Deleting rows.
+	•	Returns: void.
+	•	Entity must be managed; if detached, load/find it first or merge() then remove.
+
+	4.	Session.find(EntityClass.class, id) (Read by PK)
+	•	Fetches by primary key; returns null if not found.
+	•	Simple lookups.
+	•	Returns: Managed entity or null.
+	•	Honors first-level cache; may not hit DB if already loaded.
+
+	Session utility & state control
+	1.	Session.flush()
+	•	Forces synchronization of persistence context to DB (executes pending SQL) without ending tx.
+	•	You need DB to reflect changes mid-transaction (e.g., for subsequent queries).
+	•	Returns: void.
+	•	Can trigger constraint errors early; usually rely on commit to flush.
+
+	2.	Session.clear()
+	•	Detaches all managed entities from the session.
+	•	Long sessions; free memory before loading big result sets.
+	•	Returns: void.
+	•	After clear, entities are DETACHED; further changes won’t auto-persist.
+
+	3.	Session.refresh(entity)
+	•	Reloads entity state from DB, discarding local changes.
+	•	Ensure you see latest DB data (after triggers/other tx).
+	•	Returns: void.
+	•	Overwrites in-memory changes; use with care.
+
+	4.	Session.contains(entity)
+	•	Checks if the instance is currently managed by the session.
+	•	You need to know if merge/detach is required.
+	•	Returns: boolean.
+	•	false for detached or transient entities.
+
+	5.	Session.detach(entity)
+	•	Removes a specific entity from the persistence context (makes it DETACHED).
+	•	Stop tracking an object, avoid unintended updates.
+	•	Returns: void.
+	•	Further changes won’t be flushed unless you merge() later.
+
+	6.	Session.close()
+	•	Closes the session and releases JDBC resources.
+	•	End of unit of work (always).
+	•	Returns: void.
+	•	Accessing managed entities after close leaves them DETACHED.
+
+ Relationships in Hibernate
+
+  Hibernate supports different kinds of relationships between entities.
+  These map directly to relationships in relational databases.
+
+	1. One-to-One (1:1)
+	•	One entity is associated with exactly one other entity.
+        Example: A Contact has one Profile Picture.
+
+	•	Annotation: @OneToOne
+		Ways to map:
+	•	Shared primary key (both tables share the same ID).
+	•	Foreign key (one table has a foreign key column referencing the other).
+	
+	•	Important points:
+	•	Use @JoinColumn on the owning side.
+	•	Use mappedBy on the inverse side.
+	•	Can add cascade = CascadeType.ALL so both entities save/update together.
+
+    2. One-to-Many (1:N)
+	•	One entity can have multiple related entities.
+        Example: A Contact has many Call Logs.
+	
+	•	Annotation:@OneToMany
+		Ways to map:
+	•	Unidirectional: Only one side knows the relationship.
+	•	Bidirectional: Both sides know the relationship (mappedBy on the “many” side).
+	
+	•	Important points:
+	•	Typically represented by a List or Set.
+	•	Needs either a @JoinColumn (unidirectional) or mappedBy (bidirectional).
+	•	Use orphanRemoval = true if you want children deleted when removed from the collection.
+
+	3. Many-to-One (N:1)
+	•  Many entities refer to one parent entity.
+       Example: Many Orders belong to one Customer.
+	
+	•	Annotation:@ManyToOne
+		Ways to map:
+	•	Usually the owning side of a @OneToMany relationship.
+	•	Always uses @JoinColumn to define the foreign key column.
+
+	•	Important points:
+	•	This is the most common relationship (foreign key in child table).
+	•	Use fetch = FetchType.LAZY for performance.
+
+
+	4. Many-to-Many (N:M)
+	•	Many entities are related to many other entities.
+        Example: A Student can enroll in many Courses, and a Course can have many Students.
+	•	Annotation:@ManyToMany
+
+	    Ways to map:
+	•	Needs a join table with two foreign keys.
+	•	Use @JoinTable to define the join table and its columns.
+
+	•	Important points:
+	•	Use mappedBy for the inverse side in bidirectional relationships.
+	•	Best to manage associations on one side (to avoid duplicate insert issues).
+	•	Use Set instead of List to prevent duplicates.
+
+
+	Always decide:
+	•	Who owns the relationship? (Owning side = defines @JoinColumn or @JoinTable)
+	•	Do you want unidirectional (simpler, but fewer navigations) or bidirectional (more natural, but more complex)?
+
+
+    
+
+
+	Cascading & collections helpers (patterns, not methods)
+	1.	cascade = CascadeType.ALL (on association)
+	•	Propagates persist/merge/remove/refresh to children.
+	•	Parent “owns” lifecycle (e.g., Contact → CallLogs).
+
+	2.	orphanRemoval = true (on @OneToMany)
+	•	Removing a child from the collection schedules a DELETE.
+	•	Use it when Child has no meaning without parent.
+
+	🔹 What is Fetch Type?
+	•	Fetch Type in Hibernate/JPA defines how related entities are loaded from the database.
+	•	It decides when associated entities (in relationships like OneToOne, OneToMany, etc.) are fetched:
+	•	Eager Loading → Loads data immediately.
+	•	Lazy Loading → Loads data only when needed.
+
+	🔹 Types of Fetching
+
+1. FetchType.EAGER
+	•	Loads the associated entity or collection at the same time as the parent entity.
+	•	When you query a parent, Hibernate executes JOINs or extra queries to fetch the related data.
+	
+	•	Pros: Simple to use, ensures data is available.
+	•	Cons: Can cause performance issues if associations are large or rarely used.
+	•	
+	    Default:
+	•	@OneToOne → EAGER
+	•	@ManyToOne → EAGER
+
+	2. FetchType.LAZY
+	•	Loads the associated entity only when accessed in code.
+	•	Uses proxy objects (dynamic loading). Actual SQL query runs only when getter method is called.
+	
+	•	Pros: Improves performance, avoids unnecessary queries.
+	•	Cons: May throw LazyInitializationException if session is closed before access.
+	
+	•	Default:
+	•	@OneToMany → LAZY
+	•	@ManyToMany → LAZY
+
+    Best Practices
+	1.	Use LAZY by default to avoid heavy queries.
+	2.	Override to EAGER only if you always need the related entity.
+	3.	For large collections, always prefer LAZY + batch fetching.
+
+
+    •	EAGER = “Load now, even if not needed.”
+	•	LAZY = “Load later, only if needed.”

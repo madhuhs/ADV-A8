@@ -35,6 +35,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>7.0.0-M8</version>
+        </dependency>
+
         <!-- Log4j2 API + Core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

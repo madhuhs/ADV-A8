@@ -4,8 +4,9 @@ import com.jspiders.contacts.repo.ContactsEntity;
 import com.jspiders.contacts.repo.ContactsRepositoryImpl;
 
 public class ContactsRepositoryTests {
-    public static void runTests(){
+    public static void main(String[] args){
         testSaveContact();
+
     }
     private static void testSaveContact(){
         try {
@@ -17,6 +18,5 @@ public class ContactsRepositoryTests {
         catch (Exception ex){
             ex.printStackTrace();
         }
-
     }
 }

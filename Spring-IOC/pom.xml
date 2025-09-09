@@ -21,6 +21,7 @@
             <artifactId>spring-context</artifactId>
             <version>7.0.0-M8</version>
         </dependency>
+
     </dependencies>
 
 </project>

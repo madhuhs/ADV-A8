@@ -34,7 +34,6 @@ class EmpDbImpl implements EmployeeDb{
     }
     @Override
     public void deleteEmployee(int empId) {
-
     }
 
     private void init(){

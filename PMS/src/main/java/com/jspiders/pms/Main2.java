@@ -1,28 +1,19 @@
-package com.jspiders.main;
+package com.jspiders.pms;
 
-import com.jspiders.AppConfig;
-import com.jspiders.DemoBean;
+import com.jspiders.pms.config.AppConfig;
+import com.jspiders.pms.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class Main5 {
-
+public class Main2 {
     public static void main(String[] args) {
         System.out.println("Program starts...");
 
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
 
-       DemoBean demoBean = context.getBean(DemoBean.class);
-       DemoBean demoBean2 = context.getBean(DemoBean.class);
-
-        System.out.println("demobean : "+demoBean);
-        System.out.println("demobean2 : "+demoBean2);
-
+        UserService service = context.getBean(UserService.class);
+        service.UpdateUser();
 
         System.out.println("Program ends...");
     }
 }
-
-
-
-
