@@ -4,6 +4,7 @@ import com.jspiders.pms.dto.AddUserRequest;
 import com.jspiders.pms.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @PostMapping
-    public String addUser(@RequestBody @Valid AddUserRequest
+    public ResponseEntity<String> addUser(@RequestBody @Valid AddUserRequest
                                       addUserRequest){
         System.out.println(addUserRequest);
        //userService.createUser();
-        return "this is create user";
+        return ResponseEntity.ok("this is create user");
     }
 
 }
