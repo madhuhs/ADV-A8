@@ -23,7 +23,8 @@ public class UserController {
     }
 
     @PostMapping("/v2")
-    public ResponseEntity<AddUserResponse> addUserv2(@RequestBody AddUserReq addUserRequest){
+    public ResponseEntity<AddUserResponse> addUserv2(@RequestBody AddUserReq
+                                                                 addUserRequest){
         AddUserResponse response = new AddUserResponse();
         response.setMessage("user created");
         response.setSuccess(true);
