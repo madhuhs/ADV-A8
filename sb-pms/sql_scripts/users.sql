@@ -8,7 +8,7 @@ create table users(
 
 -- projects
 create table projects(
-                         id bigint primary key auto_increment,
+                         id int primary key auto_increment,
                          name varchar(140) not null,
                          code varchar(40) not null unique,
                          description text,
