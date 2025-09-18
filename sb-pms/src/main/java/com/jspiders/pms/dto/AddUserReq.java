@@ -1,6 +1,9 @@
 package com.jspiders.pms.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class AddUserReq {
+    @NotNull(message = "name cannot null or empty")
     private String name;
     private String email;
     private String role;

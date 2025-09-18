@@ -1,17 +1,23 @@
 package com.jspiders.pms.services;
 
-import com.jspiders.pms.data.entities.UserEntity;
-import com.jspiders.pms.data.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
+
+import com.jspiders.pms.dto.AddUserReq;
+import com.jspiders.pms.erros.DuplicateUserException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-
 @Service
-@RequiredArgsConstructor
 public class UserService {
-    public String createUser(){
-        UserEntity userEntity = new UserEntity();
-       return "user created";
+    public String createUser(AddUserReq addUserReq){
+        System.out.println("this is createUser of UserService");
+        //logic to add user
+        //assume user already exists
+        //throw exception
+        /*IllegalArgumentException illegalArgumentException =
+                new IllegalArgumentException("User already exists : "+addUserReq.getEmail());*/
+
+        DuplicateUserException duplicateUserException =
+                new DuplicateUserException("User already exists : "+addUserReq.getEmail());
+
+        throw duplicateUserException;
     }
 }
