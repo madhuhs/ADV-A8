@@ -31,4 +31,13 @@ public class AddUserReq {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "AddUserReq{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

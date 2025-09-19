@@ -1,6 +1,8 @@
 package com.jspiders.pms.erros;
 
 import com.jspiders.pms.dto.ErrorResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @ExceptionHandler(ArithmeticException.class)
     public ResponseEntity<ErrorResponse> handleArithmeticException
             (ArithmeticException ae)
@@ -29,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException
             (IllegalArgumentException ex){
-
+        logger.error(ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(ex.getMessage());
         errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -52,6 +55,7 @@ public class GlobalExceptionHandler {
         List<String> errors =
                 ex.getBindingResult().getFieldErrors()
                 .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
+
         return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
