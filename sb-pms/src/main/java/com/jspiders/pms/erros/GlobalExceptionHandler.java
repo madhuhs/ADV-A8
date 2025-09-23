@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -63,6 +64,15 @@ public class GlobalExceptionHandler {
         Map<String, List<String>> errorResponse = new HashMap<>();
         errorResponse.put("errors", errors);
         return errorResponse;
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchElementException
+            (NoSuchElementException ex){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage("User does not exist");
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
 }
