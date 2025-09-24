@@ -3,6 +3,7 @@ package com.jspiders.pms.controllers;
 import com.jspiders.pms.data.entities.UserEntity;
 import com.jspiders.pms.dto.AddUserReq;
 import com.jspiders.pms.dto.AddUserResponse;
+import com.jspiders.pms.dto.UpdateUserReq;
 import com.jspiders.pms.dto.UserResponseDto;
 import com.jspiders.pms.services.UserService;
 import com.jspiders.pms.services.UserServiceV2;
@@ -64,10 +65,32 @@ public class UserControllerV2 {
         return null;
     }
 
-
     @GetMapping("/all/{name}")
     public ResponseEntity<List<UserEntity>> getAllUsersByName(@PathVariable String name){
         logger.info("UserControllerV2 -> getAllUsersByName()");
         return null;
     }
+
+    @PatchMapping
+    public ResponseEntity<String> updateUserEmail
+            (@RequestParam String oldEmail,@RequestParam String newEmail){
+        logger.info("UserControllerV2 -> updateUserEmail()");
+        return userServicev2.updateEmail(oldEmail,newEmail);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateUser
+            (@RequestBody UpdateUserReq updateUserReq){
+        logger.info("UserControllerV2 -> updateUserReq()");
+        logger.info("UpdateUserReq {}",updateUserReq);
+        return userServicev2.updateUser(updateUserReq);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable int userId){
+        logger.info("UserControllerV2 -> deleteUser()");
+      return   userServicev2.deleteUser(userId);
+    }
+
+
 }

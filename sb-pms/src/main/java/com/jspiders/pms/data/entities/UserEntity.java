@@ -14,6 +14,8 @@ public class UserEntity {
     private String email;
     private String role;
     private LocalDate createdAt;
+    private boolean isActive;
+    private String password;
 
     public int getUserId() {
         return userId;
@@ -53,5 +55,24 @@ public class UserEntity {
 
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
