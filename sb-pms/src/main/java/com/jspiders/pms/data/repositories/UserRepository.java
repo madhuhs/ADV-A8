@@ -13,6 +13,7 @@ public interface UserRepository extends CrudRepository<UserEntity,Integer> {
     //SELECT * FROM USERS where role = role
     List<UserEntity> findAllByRole(String role);
     Optional<UserEntity> findByEmail(String email);
+    boolean existsByEmailAndPassword(String email,String password);
 
     //Optional is used to avoid NPE
 }

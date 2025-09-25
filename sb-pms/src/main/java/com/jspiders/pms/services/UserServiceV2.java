@@ -6,15 +6,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jspiders.pms.controllers.UserControllerV2;
 import com.jspiders.pms.data.entities.UserEntity;
 import com.jspiders.pms.data.repositories.UserRepository;
-import com.jspiders.pms.dto.AddUserReq;
-import com.jspiders.pms.dto.AddUserResponse;
-import com.jspiders.pms.dto.UpdateUserReq;
-import com.jspiders.pms.dto.UserResponseDto;
+import com.jspiders.pms.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +27,18 @@ public class UserServiceV2 {
 
     @Value("${app.constants.success}")
     private String addUserSuccessMsg;
-
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceV2(UserRepository userRepository,
-                         ObjectMapper objectMapper){
+                         ObjectMapper objectMapper,
+                         PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
+        this.passwordEncoder = passwordEncoder;
+
     }
 
     public ResponseEntity<AddUserResponse> addUser(AddUserReq addUserReq){
@@ -57,6 +58,16 @@ public class UserServiceV2 {
 
         //save user-entity to database
         logger.info("Trying to save data to db");
+
+        userEntity.setCreatedAt(LocalDate.now());
+        userEntity.setActive(true);
+
+        //encrypt the password before saving to db
+
+        String passwordWithoutEncrypt = addUserReq.getPassword();
+        String passwordWithEncrypt = passwordEncoder.encode(passwordWithoutEncrypt);
+        userEntity.setPassword(passwordWithEncrypt);
+
         userRepository.save(userEntity);
         logger.info(addUserSuccessMsg);
         AddUserResponse addUserResponse = new AddUserResponse();
@@ -135,4 +146,14 @@ public class UserServiceV2 {
     }
 
 
+    public ResponseEntity<String> login(LoginRequest loginRequest) {
+        logger.info("UserService  -> userLogin()");
+       boolean exists = userRepository.existsByEmailAndPassword
+                (loginRequest.getEmail(), loginRequest.getPassword());
+
+       if(!exists){
+           throw new IllegalArgumentException("invalid email or password");
+       }
+       return ResponseEntity.ok("Login Success");
+    }
 }

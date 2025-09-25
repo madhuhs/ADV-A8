@@ -1,10 +1,7 @@
 package com.jspiders.pms.controllers;
 
 import com.jspiders.pms.data.entities.UserEntity;
-import com.jspiders.pms.dto.AddUserReq;
-import com.jspiders.pms.dto.AddUserResponse;
-import com.jspiders.pms.dto.UpdateUserReq;
-import com.jspiders.pms.dto.UserResponseDto;
+import com.jspiders.pms.dto.*;
 import com.jspiders.pms.services.UserService;
 import com.jspiders.pms.services.UserServiceV2;
 import lombok.RequiredArgsConstructor;
@@ -92,5 +89,10 @@ public class UserControllerV2 {
       return   userServicev2.deleteUser(userId);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> userLogin(@RequestBody LoginRequest loginRequest){
+        logger.info("UserControllerV2 -> userLogin()");
+        return userServicev2.login(loginRequest);
+    }
 
 }
