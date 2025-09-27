@@ -2,56 +2,72 @@ package com.jspiders.pms.config;
 
 import com.jspiders.pms.data.entities.UserEntity;
 import com.jspiders.pms.data.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.stereotype.Component;
 import java.util.Collections;
+import java.util.List;
+
 
 @Configuration
 public class SecurityConfig {
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    // DB-backed auth
-    @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return username -> {
-            UserEntity u = userRepository.findByEmail(username).orElseThrow();
-
-            return new User(
-                    u.getEmail(),
-                    u.getPassword(),     // must be BCrypt-encoded in DB
-                    u.isActive(),        // enabled
-                    true,                // accountNonExpired
-                    true,                // credentialsNonExpired
-                    true,                // accountNonLocked
-                    Collections.emptyList() // <-- no authorities
-            );
-        };
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        return http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**")
-                        .permitAll()  // open
-                        .anyRequest().authenticated()               // just be logged in
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/**").authenticated()
                 )
-                .csrf(csrf -> csrf.disable())                   // fine for pure REST; enable for forms
-                .httpBasic(Customizer.withDefaults());          // or .formLogin(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+                .build();
+    }
 
-        return http.build();
+}
+
+@Component
+class AppUser implements UserDetailsService
+{
+    private final UserRepository userRepository;
+    @Autowired
+    public AppUser (UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+      UserEntity userEntity =  userRepository.findByEmail(username).orElseThrow();
+      String email = userEntity.getEmail();
+      String password = userEntity.getPassword();
+
+      String role = "ROLE_"+userEntity.getRole();// ROLE_ADMIN,ROLE_USER
+//        List list = new ArrayList();
+//        list.add(new SimpleGrantedAuthority(role));
+
+        //set ROLE for the user
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities =
+                Collections.singletonList(new SimpleGrantedAuthority(role));
+
+        User user = new User(email,password,true,true,true,true,
+                simpleGrantedAuthorities);
+      return user;
     }
 }
