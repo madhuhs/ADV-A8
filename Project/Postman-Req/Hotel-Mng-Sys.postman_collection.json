@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "f83e21d3-0eb4-4f37-9a37-07b2e3614c05",
+		"name": "Hotel-Mng-Sys",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26217064",
+		"_collection_link": "https://blue-comet-721448.postman.co/workspace/class~91c91b4f-1c13-419c-9910-ecca2a896c18/collection/26217064-f83e21d3-0eb4-4f37-9a37-07b2e3614c05?action=share&source=collection_link&creator=26217064"
+	},
+	"item": [
+		{
+			"name": "hotels",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"admin\",\n  \"email\": \"admin@gmail.com\",\n  \"password\": \"admin@123\",\n  \"role\": \"ADMIN\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/hotels/rooms",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels",
+						"rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hotel images",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"admin\",\n  \"email\": \"admin@gmail.com\",\n  \"password\": \"admin@123\",\n  \"role\": \"ADMIN\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/hotels/123/images",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels",
+						"123",
+						"images"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hotel facilities",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"admin\",\n  \"email\": \"admin@gmail.com\",\n  \"password\": \"admin@123\",\n  \"role\": \"ADMIN\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/hotels/123/facilities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels",
+						"123",
+						"facilities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hotel contact",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"admin\",\n  \"email\": \"admin@gmail.com\",\n  \"password\": \"admin@123\",\n  \"role\": \"ADMIN\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/hotels/123/contact",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hotels",
+						"123",
+						"contact"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

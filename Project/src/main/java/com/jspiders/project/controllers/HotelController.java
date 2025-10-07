@@ -24,15 +24,15 @@ public class HotelController {
 
     @GetMapping("/{hotelId}/images")
     public ResponseEntity<CommonResponse> getImagesByHotelId(@PathVariable Long hotelId){
-        return ResponseEntity.ok(null);
+        return hotelService.getImagesByHotelId(hotelId);
     }
 
     @GetMapping("/{hotelId}/facilities")
     public ResponseEntity<CommonResponse> getFacilitiesByHotelId(@PathVariable Long hotelId){
-        return ResponseEntity.ok(null);
+        return hotelService.getFacilitiesByHotelId(hotelId);
     }
     @GetMapping("/{hotelId}/contact")
     public ResponseEntity<CommonResponse> getContactByHotelId(@PathVariable Long hotelId){
-        return ResponseEntity.ok(null);
+        return hotelService.getContactByHotelId(hotelId);
     }
 }
