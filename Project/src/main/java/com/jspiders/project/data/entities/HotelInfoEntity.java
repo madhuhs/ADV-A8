@@ -1,12 +1,24 @@
 package com.jspiders.project.data.entities;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "hotel_info")
 public class HotelInfoEntity {
-   private Long hotelId;
-   private String hotelName;
-   private String thumbNail;
-   private String providerFamily;
-   private String propertyType;
-   private Double rating;
+    @Id//Mark this as Primary Key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hotel_id")
+    private Long hotelId;
+    @Column(name = "hotelname")
+    private String hotelName;
+    @Column(name = "thumbnail")
+    private String thumbNail;
+    @Column(name = "providerfamily")
+    private String providerFamily;
+    @Column(name = "propertytype")
+    private String propertyType;
+    @Column(name = "rating")
+    private Double rating;
 
     public Long getHotelId() {
         return hotelId;
