@@ -18,4 +18,18 @@ public class ResponseUtil {
 
         return ResponseEntity.ok(commonResponse);
     }
+
+    public static ResponseEntity<CommonResponse> getErrorResponse(String message,
+                                                                  Object data)
+    {
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse.setHttpStatus(HttpStatus.NOT_FOUND);
+        commonResponse.setSuccess(false);
+        commonResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+
+        commonResponse.setMessage(message);
+        commonResponse.setData(data);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(commonResponse);
+    }
 }
