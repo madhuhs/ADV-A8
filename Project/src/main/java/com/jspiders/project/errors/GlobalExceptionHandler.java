@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CommonResponse> noSuchElementExceptionHandler
                                           (NoSuchElementException ex)
     {
-       return ResponseUtil.getErrorResponse("Data not found",null);
+       return ResponseUtil.getErrorResponse(ex.getMessage(),null);
     }
 }
 

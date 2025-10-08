@@ -20,6 +20,19 @@ public class HotelInfoEntity {
     @Column(name = "rating")
     private Double rating;
 
+    @OneToOne(cascade = CascadeType.ALL,
+               orphanRemoval = true,
+               fetch = FetchType.LAZY)
+    private HotelContactInfoEntity hotelContactInfo;
+
+    public HotelContactInfoEntity getHotelContactInfo() {
+        return hotelContactInfo;
+    }
+
+    public void setHotelContactInfo(HotelContactInfoEntity hotelContactInfo) {
+        this.hotelContactInfo = hotelContactInfo;
+    }
+
     public Long getHotelId() {
         return hotelId;
     }
