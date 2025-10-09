@@ -2,6 +2,8 @@ package com.jspiders.project.data.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "hotel_info")
 public class HotelInfoEntity {
@@ -24,6 +26,18 @@ public class HotelInfoEntity {
                orphanRemoval = true,
                fetch = FetchType.LAZY)
     private HotelContactInfoEntity hotelContactInfo;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<HotelRoomInfoEntity> hotelRoomInfoEntityList;
+
+    public List<HotelRoomInfoEntity> getHotelRoomInfoEntityList() {
+        return hotelRoomInfoEntityList;
+    }
+
+    public void setHotelRoomInfoEntityList(List<HotelRoomInfoEntity> hotelRoomInfoEntityList) {
+        this.hotelRoomInfoEntityList = hotelRoomInfoEntityList;
+    }
 
     public HotelContactInfoEntity getHotelContactInfo() {
         return hotelContactInfo;
